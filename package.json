@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-express-starter-template",
+  "name": "auth_system",
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
