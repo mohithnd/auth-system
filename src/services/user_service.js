@@ -61,7 +61,35 @@ async function signin(data) {
   }
 }
 
+async function isAuthenticated(token) {
+  try {
+    if (!token) {
+      throw new AppError("Missing JWT Token", StatusCodes.BAD_REQUEST);
+    }
+
+    const response = Auth.verifyToken(token);
+    const user = await userRepo.get(response.id);
+    if (!user) {
+      throw new AppError("User Not Found", StatusCodes.NOT_FOUND);
+    }
+    return user.id;
+  } catch (err) {
+    if (err instanceof AppError) {
+      throw err;
+    }
+    if (err.name == "JsonWebTokenError") {
+      throw new AppError("Invalid JWT Token", StatusCodes.BAD_REQUEST);
+    }
+
+    throw new AppError(
+      "Something Went Wrong While Authentication",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createUser,
   signin,
+  isAuthenticated,
 };
