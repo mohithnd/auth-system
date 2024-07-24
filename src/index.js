@@ -1,8 +1,15 @@
 const express = require("express");
 const { ServerConfig, Logger } = require("./config");
+const cors = require("cors");
 const apiRoutes = require("./routes");
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use(express.json());
 app.use(express.text());
